@@ -14,7 +14,7 @@ class Support extends Model
 
     protected $keyType = 'uuid';
 
-    protected $fillable = ['description', 'status'];
+    protected $fillable = ['description', 'status', 'lesson_id'];
 
     public $statusOptions = [
         'P' => 'Pendente, Aguardando Professor',
@@ -22,11 +22,18 @@ class Support extends Model
         'C' => 'Completo'
     ];
 
-    public function user() {
+    public function user()
+    {
         return $this->belongsTo(User::class);
     }
 
-    public function lesson() {
+    public function lesson()
+    {
         return $this->belongsTo(Lesson::class);
+    }
+
+    public function replies()
+    {
+        return $this->hasMany(ReplySupport::class);
     }
 }

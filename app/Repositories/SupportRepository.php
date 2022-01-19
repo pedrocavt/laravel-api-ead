@@ -9,12 +9,13 @@ class SupportRepository
 {
     protected $entity;
 
-    public function __construct(Support $model) {
+    public function __construct(Support $model)
+    {
         $this->entity = $model;
     }
 
-    public function getSupports(array $filters = []) {
-
+    public function getSupports(array $filters = [])
+    {
         return $this->getUserAuth()
             ->supports()
             ->where(function ($query) use ($filters) {
@@ -34,7 +35,30 @@ class SupportRepository
             ->get();
     }
 
-    private function getUserAuth():User {
+    public function createSupport(array $data): Support
+    {
+        return $this->getUserAuth()->supports()->create([
+            'lesson_id' => $data['lesson'],
+            'description' => $data['description'],
+            'status' => $data['status']
+        ]);
+    }
+
+    public function createReplyToSupport($id, $data)
+    {
+        $this->getSupport($id)->replies()->create([
+            'description' => $data['description'],
+            'user_id' => $this->getUserAuth()->id
+        ]);
+    }
+
+    private function getSupport($id)
+    {
+        return $this->entity->findOrFail($id);
+    }
+
+    private function getUserAuth():User
+    {
         return User::first();
     }
 }
