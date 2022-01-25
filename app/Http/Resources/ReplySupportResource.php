@@ -14,6 +14,10 @@ class ReplySupportResource extends JsonResource
      */
     public function toArray($request)
     {
-        return parent::toArray($request);
+        return [
+            'description' => $this->description,
+            'support' => new SupportResource($this->support),
+            'user' => new UserResource($this->user)
+        ];
     }
 }

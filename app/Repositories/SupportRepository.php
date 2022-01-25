@@ -46,7 +46,7 @@ class SupportRepository
 
     public function createReplyToSupport($id, $data)
     {
-        $this->getSupport($id)->replies()->create([
+        return $this->getSupport($id)->replies()->create([
             'description' => $data['description'],
             'user_id' => $this->getUserAuth()->id
         ]);
